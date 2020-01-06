@@ -1,0 +1,120 @@
+---
+title: "individual_writeup"
+author: "Corey Kozlovski"
+date: "12/16/2019"
+output: html_document
+---
+
+In my portion of the project, I looked at the two hypothesis tests that my group members performed and expanded on each of them so we could learn more about both homelessness in the USA overall and more specifically in Massachusetts. 
+
+### Part One - Massachusetts vs The Rest of the USA
+
+  In Jeenil's part of the project, he looked at how Massachusetts' overall homelessness in relation to the general population compared to the rest of the United States's overall homelessness proportion. He performed a two sided hypothesis test that resulted in him finding that Massachusetts' homelessness proportion was not in line with the rest of the United States. This, by itself, is not able to tell us any information about if it is lower or higher than the rest of the United States, as it only tells us if it is equal. Because of this, I decided to expand on his testing by introducing a one sided hypothesis test.
+  
+  In my one sided hypothesis test, I used the same $\mu_{Non-Massachusetts}$ value being compared to Massachusetts' homelessness proportion of $0.0029075$, but instead of having my Null and Alternative hypotheses as being equal and not equal to respectively, I had my Null hypothesis be greater than or equal to and my Alternative as less than. By doing this, I am able to determine if Massachusetts' homelessness proportion is greater than or less than, as opposed to just equal or not equal to, the rest of the United States, which can help us contextualize where our state lies in relation to the rest of the country.
+  
+<br>
+I first started by stating my Null and Alternate Hypotheses, as seen below:
+  
+  $H_0: \mu_{Non-Massachusetts} >= 0.0029075$
+  
+  $H_A: \mu_{Non-Massachusetts} < 0.0029075$
+  
+<br>
+Afterwards, I stated my Significance Value $\alpha$, which indicates the acceptable error probability of my test. I chose an $\alpha$ of 0.05, as that is generally considered standard.
+
+$\alpha$ = 0.05
+
+<br>
+Moving forward, I calculated a Test Statistic in order to measure the difference between the observed data and what is expected if the $H_0$ is true. To calculate this, I used the following equation:
+
+$T = \frac{\overline{x} - \mu_{Non-Massachusetts}}{sd/ \sqrt{n}}$
+
+Where:
+
+$\overline{x}$  = 0.0029075
+
+$\mu_{Non-Massachusetts}$ = Mean of the Rest of the United States' Homelessness Proportion
+
+$n$ = Number of States without Massachusetts (49)
+
+$sd$ = Standard Deviation of the Rest of the United States' Homelessness Proportion
+
+
+With a result of:
+
+$T = 6.170431$
+
+<br>
+I then calculated a P-Value using the R's pt() function:
+
+$pv = 6.388072e-08$
+
+<br> 
+Another way I could have done all this was with the $t.test$ method. I decided to test both ways to verify that I get the same answer, which I do end up getting.
+```{r, echo=FALSE}
+MA.vs.US <- read.csv("CSV's/Overall Homelessness in 2018.csv")
+t.test(MA.vs.US$X..Homelessness[-1], mu=0.0029075, alternative = 'less')
+```
+
+<br>
+From both the manual calculations and from using the t.test function in R, we find that our $pv$ is 6.388e-08. Since this value is lower than our $\alpha$, 0.05, we can reject the null hypothesis, meaning that all non-MA states do not have a greater than or equal to overall homelessness as MA. We have statisically significant evidence to conclude that non-MA states have a lower overall homelessness than MA does. This tells us that MA has a higher homelessness value than the rest of the nation on average.
+
+<br>
+
+### Part Two - Boston vs The Rest of Massachusetts
+
+In Thomas' portion of the project, he looked at Boston's Continuum of Care(CoC)'s homelessness proportion and compared it against the rest of Massachusetts' CoCs's homelessness proportion to see if they were equivalent or not. Similar to the last scenario, by doing this two sided test, we only learn if there is any form of equvalence between Boston's CoC and the rest of Massachusetts' CoCs, so I expanded on this by performing a one-sided hypothesis test. This process mirrors what I performed in the last one-sided hypothesis test, and proceeds as follows:
+
+  
+<br>
+Null and Alternate Hypotheses:
+  
+  $H_0: \mu_{Non-Boston} >= 0.008908942$
+  
+  $H_A: \mu_{Non-Boston} < 0.008908942$
+  
+<br>
+Specifying $\alpha$:
+
+$\alpha$ = 0.05
+
+<br>
+Calculating T-Statistic:
+$T = \frac{\overline{x} - \mu_{Non-Boston}}{sd/ \sqrt{n}}$
+
+Where:
+
+$\overline{x}$  = 0.008908942
+
+$\mu_{Non-Massachusetts}$ = Mean of the Rest of Massachusetts' CoC Homelessness Proportion
+
+$n$ = Number of CoC's not including Boston's CoC (49)
+
+$sd$ = Standard Deviation of the Rest of Massachusetts' CoC Homelessness Proportion
+
+
+With a result of:
+
+$T = 6.20904$
+
+<br>
+Calculating P-Value:
+
+$pv = 2.262258e-05$
+
+<br> 
+Using $t.test$ instead:
+```{r, echo=FALSE}
+MA.CoCs = read.csv("CSV's/MA CoC's.csv")
+t.test(MA.CoCs$Ratio.of.Homeless[-1], mu=0.008908942, alternative = 'less')
+```
+<br>
+Since our $pv$ is significantly less than our $\alpha$, 0.05, we can reject our null hypothesis that all non-Boston CoC's have a greater than or equal to homelessness proportion than Boston's CoC. We have statisically significant evidence to suggest that the non-Boston CoC's have a lower average homelessness proportion than Boston's CoC, which tells us that Boston has the highest homelessness proportion in comparison to the rest of Massachusetts.
+
+
+
+
+
+
+

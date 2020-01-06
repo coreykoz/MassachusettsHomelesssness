@@ -1,0 +1,105 @@
+---
+title: "project_corey"
+author: "Corey Kozlovski"
+date: "11/19/2019"
+output: html_document
+---
+
+#One-Sided Hypothesis Testing (non-MA vs MA)
+
+#Reading the data
+```{r}
+MA.vs.US <- read.csv("CSV's/Overall Homelessness in 2018.csv")
+```
+
+
+#Random Summary Statistics
+```{r}
+hist(MA.vs.US$X..Homelessness)
+plot(MA.vs.US$ï..State, MA.vs.US$Overall.Homeless..2018)
+
+```
+#Step 1
+Null: All non-MA states have a greater than or equal to overall homelessness as MA
+H0: Mu >= 0.0029075
+
+Alternate Hypothesis: All non-MA states have a lower overall homelessness than MA
+Ha: Mu < 0.0029075
+
+#Calculating Manually
+#Step 2
+The Alpha level we will use is .05.
+
+#Step 3
+Calculating the T-Statistic
+```{r}
+x_bar <- 0.0029075
+n <- nrow(MA.vs.US) - 1
+sd <- sd(MA.vs.US$X..Homelessness[-1])
+mu_0 <- mean(MA.vs.US$X..Homelessness[-1])
+t_stat <- (x_bar - mu_0)/(sd/sqrt(n))
+t_stat
+```
+#Step 4
+Calculating the P-Value
+```{r}
+p_val <- pt(-abs(t_stat), df = n-1)
+p_val
+```
+
+#Calculating with t.test
+```{r}
+t.test(MA.vs.US$X..Homelessness[-1], mu=0.0029075, alternative = 'less')
+```
+#Step 5
+Conclusion
+
+From both the manual calculations and from using the t.test function in R, we find that the p value is 6.388e-08. Since this value is lower than our alpha, .05, we can reject the null hypothesis, meaning that all non-MA states do not have a greater than or equal to overall homelessness as MA. We have statisically significant evidence to conclude that non-MA states have a lower overall homelessness than MA does. This tells us that MA has a higher homelessness value than the rest of the nation on average.
+
+
+
+#One-Sided Hypothesis Testing (Non-Boston Coc's vs Boston Coc)
+
+#Read in the data
+```{r}
+MA.CoCs = read.csv("CSV's/MA CoC's.csv")
+```
+
+#Step 1
+Null: All non-Boston CoC's in MA have a greater than or equal to overall homelessness as Boston
+H0: Mu >= 0.008908942
+
+Alternate Hypothesis: All non-Boston CoC's in MA have a lower overall homelessness than Boston
+Ha: Mu < 0.008908942
+
+#Calculating Manually
+#Step 2
+The Alpha level we will use is .05.
+
+#Step 3
+Calculating the T-Statistic
+```{r}
+x_bar <- 0.008908942
+n <- nrow(MA.CoCs) - 1
+sd <- sd(MA.CoCs$Ratio.of.Homeless[-1])
+mu_0 <- mean(MA.CoCs$Ratio.of.Homeless[-1])
+t_stat <- (x_bar - mu_0)/(sd/sqrt(n))
+t_stat
+```
+#Step 4
+Calculating the P-Value
+```{r}
+p_val <- pt(-abs(t_stat), df = n-1)
+p_val
+```
+
+#Calculating with t.test
+```{r}
+t.test(MA.CoCs$Ratio.of.Homeless[-1], mu=0.008908942, alternative = 'less')
+```
+#Step 5
+Conclusion
+Since our p value is significantly less than our alpha, .05, we can reject our null hypothesis that all non-Boston CoC's have a greater than or equal to homelessness value than Boston's CoC. We have statisically significant evidence that the non-Boston CoC's have a lower average homelessness than Boston's CoC, which tells us that Boston has the highest homelessness value in comparison to the rest of MA.
+
+
+

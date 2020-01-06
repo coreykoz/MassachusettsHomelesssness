@@ -1,0 +1,86 @@
+---
+title: "Project_TG"
+output: html_document
+---
+
+#Read in the data
+```{r}
+MA.CoCs = read.csv("CSV's/MA CoC's.csv")
+```
+
+#Summary of Proportions
+```{r}
+summary(MA.CoCs$Ratio.of.Homeless)
+```
+
+#Histogram
+```{r}
+hist(MA.CoCs$Ratio.of.Homeless)
+```
+
+#95% Confidence Interval
+```{r}
+MA.mean = mean(MA.CoCs$Percent.of.Homeless)
+MA.SD = sd(MA.CoCs$Percent.of.Homeless)
+MA.N = nrow(MA.CoCs)
+```
+
+```{r}
+error = 1.96 * (MA.SD / sqrt(MA.N))
+left = MA.mean - error
+right = MA.mean + error
+
+ci = c(left, right)
+ci
+```
+With 95% confidence, we can say that the population mean of ratio of homelessness in MA is between 0.2247233% and 0.5694005%
+
+But, since we are trying to compare Boston to the rest of MA, we should run a confidence interval exluding Boston
+
+#95% Confidence Interval (Exclude Boston)
+```{r}
+MA.mean = mean(MA.CoCs$Percent.of.Homeless[-1])
+MA.SD = sd(MA.CoCs$Percent.of.Homeless[-1])
+MA.N = nrow(MA.CoCs) - 1
+```
+
+```{r}
+error = 1.96 * (MA.SD / sqrt(MA.N))
+left = MA.mean - error
+right = MA.mean + error
+
+ci = c(left, right)
+ci
+```
+So, we can say that With 95% confidence, the percent population mean of homelessness in MA exluding Boston is between 0.1911960% and 0.5269536%
+
+
+#Hypothesis Test
+
+#Step 1. Establish Null and Alternative Hypothesis
+Null Hypothesis: All non-boston CoC's has the same overall homelessness as Boston
+H0: Mu = 0.8908942%
+
+Alternate Hypothesis: All non-boston CoC's have a different overall homelessness than Boston
+HA: Mu != 0.8908942%
+
+#Step 2. State the Alpha
+Alpha = 0.05
+
+#Step 3. Calculate the test statistic
+```{r}
+mu0 = mean(MA.CoCs$Percent.of.Homeless[-1])
+xbar = MA.CoCs$Percent.of.Homeless[1]
+sigma = sd(MA.CoCs$Percent.of.Homeless[-1])
+n = nrow(MA.CoCs) - 1
+t = (xbar - mu0)/(sigma / sqrt(n)) 
+t
+```
+#Step 4. Calculate the P-value
+```{r}
+pval = 2 * pt(-abs(t), df=n-1)
+pval
+```
+
+#Conclusion
+We  reject  the  null  hypothesis  that  the  average percent of homelessness per population for  MA  equals the Boston percent of homelessness. There is statistically significant evidence to suggest that the average homelessness for MA is lower than Boston, and that the observed difference between the means is unlikely to be due to random chance.
